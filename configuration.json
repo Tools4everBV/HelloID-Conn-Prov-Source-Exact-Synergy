@@ -1,0 +1,24 @@
+[
+    {
+      "key": "filepath",
+      "type": "input",
+      "defaultValue": "",
+      "templateOptions": {
+        "label": "folderpath",
+        "placeholder": "Path to the file",
+        "description": "",
+        "required": true
+      }
+    },
+    {
+      "key": "filename",
+      "type": "input",
+      "defaultValue": "",
+      "templateOptions": {
+        "label": "Filename",
+        "placeholder": "Name of the file",
+        "description": "",
+        "required": true
+      }
+    }
+  ]
