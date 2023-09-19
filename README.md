@@ -1,2 +1,2 @@
-# HelloID-Conn-Prov-Target-Template
-Template repository for HelloID Provisioning Target Connector
+# HelloID-Conn-Prov-Source-Exact-Synergy
+This repository contains the connector and configuration code 
