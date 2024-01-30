@@ -4,25 +4,41 @@
       "name": "ExternalId",
       "mode": "field",
       "value": "ExternalId",
-      "validation": { "required": false }
+      "validation": {
+        "required": false
+      }
     },
     {
       "name": "Name.Convention",
-      "mode": "field",
-      "value": "Convention",
-      "validation": { "required": false }
+      "mode": "fixed",
+      "value": "B",
+      "validation": {
+        "required": false
+      }
     },
     {
       "name": "Name.FamilyName",
       "mode": "field",
-      "value": "LastName",
-      "validation": { "required": true }
+      "value": "naam_Achternaam",
+      "validation": {
+        "required": true
+      }
+    },
+    {
+      "name": "Name.FamilyNamePrefix",
+      "mode": "field",
+      "value": "naam_Voorvoegsels",
+      "validation": {
+        "required": false
+      }
     },
     {
       "name": "Name.NickName",
       "mode": "field",
-      "value": "FirstName",
-      "validation": { "required": true }
+      "value": "naam_Roepnaam",
+      "validation": {
+        "required": true
+      }
     }
   ],
   "contractMappings": [
@@ -30,61 +46,81 @@
       "name": "Department.DisplayName",
       "mode": "complex",
       "value": "let department=sourceContract.afdeling_Loonverdeling_Afdeling\r\nlet departmenttype = typeof department\r\nif (departmenttype == 'object') {department=sourceContract.afdeling_Loonverdeling_Afdeling[0]}\r\nelse department= sourceContract.afdeling_Loonverdeling_Afdeling",
-      "validation": { "required": false }
+      "validation": {
+        "required": false
+      }
     },
     {
       "name": "Department.ExternalId",
       "mode": "complex",
       "value": "//sourceContract.afdeling_Loonverdeling_afdelings_code[0]\r\nlet department_code=sourceContract.afdeling_Loonverdeling_afdelings_code\r\nlet department_codetype = typeof department_code\r\nif (department_codetype == 'object') {department=sourceContract.afdeling_Loonverdeling_afdelings_code[0]}\r\nelse department_code= sourceContract.afdeling_Loonverdeling_afdelings_code\r\n                        ",
-      "validation": { "required": false }
+      "validation": {
+        "required": false
+      }
     },
     {
       "name": "Employer.ExternalId",
       "mode": "field",
       "value": "contract_Werkgevers_code",
-      "validation": { "required": false }
+      "validation": {
+        "required": false
+      }
     },
     {
       "name": "Employer.Name",
       "mode": "field",
       "value": "contract_Werkgever",
-      "validation": { "required": false }
+      "validation": {
+        "required": false
+      }
     },
     {
       "name": "EndDate",
       "mode": "field",
       "value": "contract_DatumUitDienst",
-      "validation": { "required": false }
+      "validation": {
+        "required": false
+      }
     },
     {
       "name": "ExternalId",
       "mode": "field",
       "value": "ExternalId",
-      "validation": { "required": false }
+      "validation": {
+        "required": false
+      }
     },
     {
       "name": "Manager.ExternalId",
       "mode": "field",
       "value": "leidinggevende_Strooknummer",
-      "validation": { "required": false }
+      "validation": {
+        "required": false
+      }
     },
     {
       "name": "StartDate",
       "mode": "field",
       "value": "contract_Concerndatum",
-      "validation": { "required": false }
+      "validation": {
+        "required": false
+      }
     },
     {
       "name": "Title.ExternalId",
       "mode": "complex",
       "value": "sourceContract.afdeling_Beroep_Code[0]\r\nlet title_code=sourceContract.afdeling_Beroep_Code\r\nlet title_codetype = typeof title_code\r\nif (title_codetype == 'object') {title=sourceContract.afdeling_Beroep_Code[0]}\r\nelse title_code= sourceContract.afdeling_Beroep_Code\r\n                        ",
-      "validation": { "required": false }
+      "validation": {
+        "required": false
+      }
     },
     {
       "name": "Title.Name",
       "mode": "complex",
       "value": "let beroep=sourceContract.afdeling_Beroep\r\nlet beroeptype = typeof beroep\r\nif (beroeptype == 'object') {beroep=sourceContract.afdeling_Beroep[0]}\r\nelse beroep= sourceContract.afdeling_Beroep\r\n\r\n",
-      "validation": { "required": false }
+      "validation": {
+        "required": false
+      }
     }
   ]
 }
