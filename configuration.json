@@ -1,24 +1,24 @@
 [
-    {
-      "key": "filepath",
-      "type": "input",
-      "defaultValue": "",
-      "templateOptions": {
-        "label": "folderpath",
-        "placeholder": "Path to the file",
-        "description": "",
-        "required": true
-      }
-    },
-    {
-      "key": "filename",
-      "type": "input",
-      "defaultValue": "",
-      "templateOptions": {
-        "label": "Filename",
-        "placeholder": "Name of the file",
-        "description": "",
-        "required": true
-      }
+  {
+    "key": "filepath",
+    "type": "input",
+    "defaultValue": "",
+    "templateOptions": {
+      "label": "folderpath",
+      "placeholder": "Example: C:\\Helloid",
+      "description": "Path to the file",
+      "required": true
     }
-  ]
+  },
+  {
+    "key": "filename",
+    "type": "input",
+    "defaultValue": "",
+    "templateOptions": {
+      "label": "Filename",
+      "placeholder": "Example: example.xml",
+      "description": "Name of the file",
+      "required": true
+    }
+  }
+]
