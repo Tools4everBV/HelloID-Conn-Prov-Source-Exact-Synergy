@@ -1,7 +1,7 @@
 #####################################################
 # HelloID-Conn-Prov-Source-Exact-Synergy-Departments
 #
-# Version: 1.0.0
+# Version: 1.0.1
 #####################################################
 
 $c = $configuration | ConvertFrom-Json
@@ -18,14 +18,14 @@ function getDataDepartment {
 
     foreach ($id in $xml.GetElementsByTagName("Medewerker")) {
         $department = [PSCustomObject]@{}
-        foreach ($afd in $id.GetElementsByTagName("Afdeling").ChildNodes) {
+        foreach ($dept in $id.GetElementsByTagName("Afdeling").ChildNodes) {
        
-            if ($afd.LocalName -eq "Loonverdeling_afdelings_code"  ) {
-                $department | Add-Member -MemberType NoteProperty -Name ("ExternalId") -Value $afd.'#text' -Force
+            if ($dept.LocalName -eq "Loonverdeling_afdelings_code"  ) {
+                $department | Add-Member -MemberType NoteProperty -Name ("ExternalId") -Value $dept.'#text' -Force
             }
             
-            if ($afd.LocalName -eq "Loonverdeling_afdeling"  ) {
-                $department | Add-Member -MemberType NoteProperty -Name ("DisplayName") -Value $afd.'#text' -Force 
+            if ($dept.LocalName -eq "Loonverdeling_afdeling"  ) {
+                $department | Add-Member -MemberType NoteProperty -Name ("DisplayName") -Value $dept.'#text' -Force 
             }
             
             [void]$departments.value.Add($department)
@@ -33,12 +33,9 @@ function getDataDepartment {
     }
 }
 
-try {
-    $departments = [System.Collections.ArrayList]::new()
-}
-catch {
-    Write-Verbose "Error : $($_)" -Verbose
-}
+
+$departments = [System.Collections.ArrayList]::new()
+
 
 try {  
     getDataDepartment -file $file -departments ([ref]$departments) 
@@ -63,4 +60,5 @@ try {
 }
 catch {
     Write-Verbose "Error : $($_)" -Verbose
+    throw "Could not read $($file)"
 }
