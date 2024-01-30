@@ -1,13 +1,13 @@
 #####################################################
 # HelloID-Conn-Prov-source-Exact-Synergy-Persons
 #
-# Version: 1.0.0
+# Version: 1.0.1
 #####################################################
 $c = $configuration | ConvertFrom-Json
 $filepath = $c.filepath
 $filename = $c.filename
 $file = $filepath + "\" + $filename
-#$file = "C:\helloid\export.xml"
+
 function getData {
     param(
         [parameter(Mandatory = $true)]$file,
@@ -17,9 +17,9 @@ function getData {
     [xml]$xml = get-content $file
 
     
-    $plm = $xml.jh.Medewerker
-    $afdelinglist2 = [System.Collections.ArrayList]::new()
-    foreach ($record in $plm) {
+    $xmldata = $xml.jh.Medewerker
+    $contractslist = [System.Collections.ArrayList]::new()
+    foreach ($record in $xmldata) {
         $transform = [PSCustomObject]@{
             ExternalId                                             = "$($record.Strooknummer)-1"
             strooknummer                                           = $record.strooknummer 
@@ -34,15 +34,15 @@ function getData {
             afdeling_Datum_Functiewijziging                        = $record.afdeling.Datum_Functiewijziging
             leidinggevende_Afdelingsverantwoordelijke_1_Achternaam = $record.Leidinggevende.Afdelingsverantwoordelijke_1_Achternaam
             leidinggevende_Strooknummer                            = $record.Leidinggevende.Strooknummer
-            taken_GSO                                              = $record.Taken.GSO
-            taken_VVDGVA                                           = $record.Taken.VVDGVA
-            rollen_R66                                             = $record.Rollen.R66
-            extra_OR_Functionaris                                  = $record.Extra.OR_Functionaris
+            taken_taak1                                            = $record.Taken.taak1
+            taken_taak2                                            = $record.Taken.taak2
+            rollen_OR                                              = $record.Rollen.OR
+            extra_OR_Functie                                       = $record.Extra.OR_Functie
            
         }
-        [void]$afdelinglist2.Add($transform)
+        [void]$contractslist.Add($transform)
     }
-    $afdelinglist2Grouped = $afdelinglist2 | Group-Object -Property strooknummer  -AsHashTable
+    $contractslistGrouped = $contractslist | Group-Object -Property strooknummer  -AsHashTable
 
     foreach ($id in $xml.GetElementsByTagName("Medewerker")) {
         $person = [PSCustomObject]@{}
@@ -56,8 +56,8 @@ function getData {
         foreach ($con in $id.GetElementsByTagName("Contract").ChildNodes) {
             $person | Add-Member -MemberType NoteProperty -Name ("contract_" + $con.LocalName) -Value $con.'#text' -Force
         }
-        foreach ($afd in $id.GetElementsByTagName("Afdeling").ChildNodes) {
-            $person | Add-Member -MemberType NoteProperty -Name ("afdeling_" + $afd.LocalName) -Value $afd.'#text' -Force
+        foreach ($department in $id.GetElementsByTagName("Afdeling").ChildNodes) {
+            $person | Add-Member -MemberType NoteProperty -Name ("afdeling_" + $department.LocalName) -Value $department.'#text' -Force
         }
 
         foreach ($mgr in $id.GetElementsByTagName("Leidinggevende").ChildNodes) {
@@ -76,7 +76,7 @@ function getData {
 
         
         $contractslist = [System.Collections.ArrayList]::new()
-        $departmentlistobject = $afdelinglist2Grouped[$id.strooknummer]
+        $departmentlistobject = $contractslistGrouped[$id.strooknummer]
         if ($null -ne $departmentlistobject) {
             [void] $contractslist.AddRange($departmentlistobject)
         }
@@ -92,6 +92,7 @@ try {
 }
 catch {
     Write-Verbose "Error : $($_)" -Verbose
+    throw "Could not read $($file)"
 }
 try {    
     $persons | Add-Member -MemberType NoteProperty -Name "ExternalId" -Value $null -Force
@@ -103,7 +104,6 @@ try {
         $_.ExternalId = $_.Strooknummer
         $_.DisplayName = "$($_.naam_Roepnaam)  $($_.naam_Voorvoegsels) $($_.naam_Achternaam)"  
 
-        #$_.Contracts = $contracts
 
     }
     Write-verbose -verbose "Persons"
